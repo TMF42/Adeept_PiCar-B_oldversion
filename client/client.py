@@ -8,6 +8,7 @@
 # Author      : William
 # Date        : 2018/12/18
 from socket import *
+from PIL import ImageTk, Image
 import sys,subprocess
 import time
 import threading as thread
@@ -253,7 +254,20 @@ def loop():                       #GUI
     while True:
         root = tk.Tk()            #Define a window named root
         root.title('Adeept')      #Main window title
-        root.geometry('917x630')  #Main window size, middle of the English letter x.
+        #root.geometry('917x630')  #Main window size, middle of the English letter x.
+        w = 917
+        h = 630
+        # get screen width and height
+        ws = root.winfo_screenwidth() # width of the screen
+        hs = root.winfo_screenheight() # height of the screen
+
+        # calculate x and y coordinates for the Tk root window
+        x = 0
+        y = 0
+
+        # set the dimensions of the screen 
+        # and where it is placed
+        root.geometry('%dx%d+%d+%d' % (ws, hs, x, y))
         root.config(bg=color_bg)  #Set the background color of root window
     
         var_spd = tk.StringVar()  #Speed value saved in a StringVar
@@ -262,7 +276,7 @@ def loop():                       #GUI
         var_x_scan = tk.IntVar()  #Scan range value saved in a IntVar
         var_x_scan.set(2)         #Set a default scan value
 
-        logo =tk.PhotoImage(file = 'logo.png')         #Define the picture of logo,but only supports '.png' and '.gif'
+        logo =ImageTk.PhotoImage(file = "logo.png")         #Define the picture of logo,but only supports '.png' and '.gif'
         l_logo=tk.Label(root,image = logo,bg=color_bg) #Set a label to show the logo picture
         l_logo.place(x=30,y=13)                        #Place the Label in a right position
 
