@@ -1,0 +1,7 @@
+run LanScan to get IP of Adeept PiCar
+
+login to Adeept PiCar via pi@[IP Address]
+
+Note: stored my password in keychain
+
+go to Adeept_PiCar-B repo clone
