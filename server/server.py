@@ -87,7 +87,7 @@ def replace_num(initial,new_num):   #Call this function to replace data in '.txt
             if(line.find(initial) == 0):
                 line = initial+"%s" %(str_num+"\n")
             newline += line
-    with open("set.txt","w") as f:
+    with open("//etc/set.txt","w") as f:
         f.writelines(newline)
         print(newline)
 

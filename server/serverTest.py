@@ -35,7 +35,7 @@ right_G = 9
 right_B = 25
 
 spd_ad     = 1          #Speed Adjustment
-pwm0       = 0          #Camera direction 
+pwm0       = 0          #Camera direction
 pwm1       = 1          #Ultrasonic direction
 status     = 1          #Motor rotation
 forward    = 1          #Motor forward
@@ -68,16 +68,16 @@ dis_scan = 1
 def replace_num(initial,new_num):   #Call this function to replace data in '.txt' file
     newline=""
     str_num=str(new_num)
-    with open("set.txt","r") as f:
+    with open("//etc/set.txt","r") as f:
         for line in f.readlines():
             if(line.find(initial) == 0):
                 line = initial+"%s" %(str_num+"\n")
             newline += line
-    with open("set.txt","w") as f:
+    with open("//etc/set.txt","w") as f:
         f.writelines(newline)
 
 def num_import_int(initial):        #Call this function to import data from '.txt' file
-    with open("set.txt") as f:
+    with open("//etc/set.txt") as f:
         for line in f.readlines():
             if(line.find(initial) == 0):
                 r=line
@@ -111,7 +111,7 @@ def scan():                  #Ultrasonic Scanning
         turn.ultra_turn(cat_2)
         cat_2 -= 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
-        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission 
+        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
     turn.ultra_turn(hoz_mid)   #Ultrasonic point forward
     return dis_dir
 
@@ -128,7 +128,7 @@ def scan_rev():                  #Ultrasonic Scanning
         turn.ultra_turn(cat_2)
         cat_2 += 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
-        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission 
+        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
     turn.ultra_turn(hoz_mid)   #Ultrasonic point forward
     return dis_dir
 
@@ -145,7 +145,7 @@ def turn_right_led():        #Turn on the LED on the right
     led.turn_right(4)
 
 def setup():                 #initialization
-    motor.setup()            
+    motor.setup()
     turn.ahead()
     findline.setup()
 
@@ -171,7 +171,7 @@ wifi_status = 0
 def run():                   #Main loop
     global hoz_mid,vtr_mid,ip_con,led_status,auto_status,opencv_mode,findline_mode,speech_mode,auto_mode,data,addr,footage_socket,ap_status,turn_status,wifi_status
     led.setup()
-    while True:              #Connection      
+    while True:              #Connection
         print('waiting for connection...')
         led.red()
         tcpCliSock, addr = tcpSerSock.accept()#Determine whether to connect
@@ -191,12 +191,12 @@ def run():                   #Main loop
     auto_threading=threading.Thread(target=auto_thread)         #Define a thread for ultrasonic tracking
     auto_threading.setDaemon(True)                              #'True' means it is a front thread,it would close when the mainloop() closes
     auto_threading.start()                                      #Thread starts
-    
+
     time.sleep(0.5)
 
     tcpCliSock.send('TestVersion'.encode())
 
-    while True: 
+    while True:
         data = ''
         data = tcpCliSock.recv(BUFSIZ).decode()
         if not data:
@@ -210,7 +210,7 @@ def run():                   #Main loop
 
         elif 'scan' in data:
             dis_can=scan()                     #Start Scanning
-            str_list_1=dis_can                 #Divide the list to make it samller to send 
+            str_list_1=dis_can                 #Divide the list to make it samller to send
             str_index=' '                      #Separate the values by space
             str_send_1=str_index.join(str_list_1)+' '
             tcpCliSock.sendall((str(str_send_1)).encode())   #Send Data
@@ -218,7 +218,7 @@ def run():                   #Main loop
 
         elif 'scan_rev' in data:
             dis_can=scan_rev()                     #Start Scanning
-            str_list_1=dis_can                 #Divide the list to make it samller to send 
+            str_list_1=dis_can                 #Divide the list to make it samller to send
             str_index=' '                      #Separate the values by space
             str_send_1=str_index.join(str_list_1)+' '
             tcpCliSock.sendall((str(str_send_1)).encode())   #Send Data
@@ -261,7 +261,7 @@ def run():                   #Main loop
                 led.setup()
                 led.both_off()
             continue
-        
+
         elif 'lightsON' in data:               #Turn on the LEDs
             led.both_on()
             led_status=1
@@ -281,7 +281,7 @@ def run():                   #Main loop
                 led.side_on(right_B)
             turn_status = 0
             turn.middle()
-        
+
         elif 'Left' in data:                   #Turn left
             if led_status == 0:
                 led.side_color_on(left_R,left_G)
@@ -289,7 +289,7 @@ def run():                   #Main loop
                 led.side_off(left_B)
             turn.left()
             tcpCliSock.send('3'.encode())
-        
+
         elif 'Right' in data:                  #Turn right
             if led_status == 0:
                 led.side_color_on(right_R,right_G)
@@ -297,7 +297,7 @@ def run():                   #Main loop
                 led.side_off(right_B)
             turn.right()
             tcpCliSock.send('4'.encode())
-        
+
         elif 'backward' in data:               #When server receive "backward" from client,car moves backward
             tcpCliSock.send('2'.encode())
             motor.motor_left(status, backward, left_spd*spd_ad)
@@ -347,7 +347,7 @@ def run():                   #Main loop
             motor.motorStop()
             led.both_off()
             turn.middle()
-        
+
         elif 'auto' in data:                   #When server receive "auto" from client,start Auto Mode
             if auto_status == 0:
                 tcpCliSock.send('0'.encode())
@@ -370,7 +370,7 @@ def run():                   #Main loop
 if __name__ == '__main__':
 
     HOST = ''
-    PORT = 10223                              #Define port serial 
+    PORT = 10223                              #Define port serial
     BUFSIZ = 1024                             #Define buffer size
     ADDR = (HOST, PORT)
 

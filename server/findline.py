@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # File name   : findline.py
-# Description : line tracking 
+# Description : line tracking
 # Website     : www.adeept.com
 # E-mail      : support@adeept.com
 # Author      : William
@@ -12,7 +12,7 @@ import turn
 import led
 
 def num_import_int(initial):        #Call this function to import data from '.txt' file
-    with open("set.txt") as f:
+    with open("//etc/set.txt") as f:
         for line in f.readlines():
             if(line.find(initial) == 0):
                 r=line

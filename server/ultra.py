@@ -11,7 +11,7 @@ import motor
 import turn,led
 
 def num_import_int(initial):       #Call this function to import data from '.txt' file
-    with open("set.txt") as f:
+    with open("//etc/set.txt") as f:
         for line in f.readlines():
             if(line.find(initial) == 0):
                 r=line
@@ -36,7 +36,7 @@ left       = num_import_int('E_T1:')         #Motor Left
 right      = num_import_int('E_T2:')         #Motor Right
 pwm0     = 0
 pwm1     = 1
-status   = 1    
+status   = 1
 forward  = 0
 backward = 1
 spd_ad_u   = 1
