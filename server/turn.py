@@ -55,7 +55,7 @@ def right():
     pwm.set_pwm(2, 0, turn_right_max)
 
 def left():
-    pwm.set_pwm(2, 0, turn_left_max)
+    pwm.a(2, 0, turn_left_max)
 
 def middle():
     pwm.set_pwm(2, 0, turn_middle)

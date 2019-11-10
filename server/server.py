@@ -49,7 +49,7 @@ right_G = 9
 right_B = 25
 
 spd_ad     = 1          #Speed Adjustment
-pwm0       = 0          #Camera direction 
+pwm0       = 0          #Camera direction
 pwm1       = 1          #Ultrasonic direction
 status     = 1          #Motor rotation
 forward    = 1          #Motor forward
@@ -89,12 +89,14 @@ def replace_num(initial,new_num):   #Call this function to replace data in '.txt
             newline += line
     with open("set.txt","w") as f:
         f.writelines(newline)
+        print(newline)
 
 def num_import_int(initial):        #Call this function to import data from '.txt' file
     with open("//etc/set.txt") as f:
         for line in f.readlines():
             if(line.find(initial) == 0):
                 r=line
+                print(line)
     begin=len(list(initial))
     snum=r[begin:]
     n=int(snum)
@@ -115,7 +117,7 @@ ip_con     = ''
 def get_ram():
     try:
         s = subprocess.check_output(['free','-m'])
-        lines = s.split('\n') 
+        lines = s.split('\n')
         return ( int(lines[1].split()[1]), int(lines[2].split()[3]) )
     except:
         return 0
@@ -186,7 +188,7 @@ def scan():                  #Ultrasonic Scanning
         turn.ultra_turn(cat_2)
         cat_2 -= 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
-        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission 
+        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
     turn.ultra_turn(hoz_mid)   #Ultrasonic point forward
     return dis_dir
 
@@ -203,7 +205,7 @@ def scan_rev():                  #Ultrasonic Scanning
         turn.ultra_turn(cat_2)
         cat_2 += 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
-        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission 
+        dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
     turn.ultra_turn(hoz_mid)   #Ultrasonic point forward
     return dis_dir
 
@@ -220,7 +222,7 @@ def turn_right_led():        #Turn on the LED on the right
     led.turn_right(4)
 
 def setup():                 #initialization
-    motor.setup()            
+    motor.setup()
     turn.ahead()
     findline.setup()
 
@@ -299,7 +301,7 @@ def opencv_thread():         #OpenCV and FPV video
                     else:
                         motor.motorStop()
                         led.both_off()
-                        led.blue()  
+                        led.blue()
                         cv2.putText(image,'In Position',(40,80), font, 0.5,(255,128,128),1,cv2.LINE_AA)
 
                     if dis < 8:
@@ -321,7 +323,7 @@ def opencv_thread():         #OpenCV and FPV video
                         else:
                             vtr_mid_orig=look_down_max
                         camera_turn(vtr_mid_orig)
-                    
+
                     if X>280:
                         if X<350:
                             #print('looked')
@@ -423,7 +425,7 @@ def run():                   #Main loop
                 led.yellow()
                 time.sleep(5)
                 wifi_status = 0
-            
+
         if wifi_status == 1:
             print('waiting for connection...')
             led.red()
@@ -481,7 +483,7 @@ def run():                   #Main loop
     scan_threading.start()                                      #Thread starts
 
 
-    while True: 
+    while True:
         data = ''
         data = tcpCliSock.recv(BUFSIZ).decode()
         if not data:
@@ -495,7 +497,7 @@ def run():                   #Main loop
 
         elif 'scan' in data:
             dis_can=scan()                     #Start Scanning
-            str_list_1=dis_can                 #Divide the list to make it samller to send 
+            str_list_1=dis_can                 #Divide the list to make it samller to send
             str_index=' '                      #Separate the values by space
             str_send_1=str_index.join(str_list_1)+' '
             tcpCliSock.sendall((str(str_send_1)).encode())   #Send Data
@@ -503,7 +505,7 @@ def run():                   #Main loop
 
         elif 'scan_rev' in data:
             dis_can=scan_rev()                     #Start Scanning
-            str_list_1=dis_can                 #Divide the list to make it samller to send 
+            str_list_1=dis_can                 #Divide the list to make it samller to send
             str_index=' '                      #Separate the values by space
             str_send_1=str_index.join(str_list_1)+' '
             tcpCliSock.sendall((str(str_send_1)).encode())   #Send Data
@@ -547,7 +549,7 @@ def run():                   #Main loop
                 led.both_off()
             colorWipe(strip, Color(0,0,0))
             continue
-        
+
         elif 'lightsON' in data:               #Turn on the LEDs
             led.both_on()
             led_status=1
@@ -567,7 +569,7 @@ def run():                   #Main loop
                 led.side_on(right_B)
             turn_status = 0
             turn.middle()
-        
+
         elif 'Left' in data:                   #Turn left
             if led_status == 0:
                 led.side_color_on(left_R,left_G)
@@ -576,7 +578,7 @@ def run():                   #Main loop
             turn.left()
             turn_status=1
             tcpCliSock.send('3'.encode())
-        
+
         elif 'Right' in data:                  #Turn right
             if led_status == 0:
                 led.side_color_on(right_R,right_G)
@@ -585,7 +587,7 @@ def run():                   #Main loop
             turn.right()
             turn_status=2
             tcpCliSock.send('4'.encode())
-        
+
         elif 'backward' in data:               #When server receive "backward" from client,car moves backward
             tcpCliSock.send('2'.encode())
             motor.motor_left(status, backward, left_spd*spd_ad)
@@ -599,27 +601,36 @@ def run():                   #Main loop
             colorWipe(strip, Color(0,0,255))
 
         elif 'l_up' in data:                   #Camera look up
-            if vtr_mid< look_up_max:
-                vtr_mid+=turn_speed
+            #if vtr_mid< look_up_max:
+            #    vtr_mid+=turn_speed
+            if vtr_mid > look_up_max:
+                vtr_mid = min(vtr_mid-turn_speed, look_up_max)
+            print(vtr_mid)
             turn.camera_turn(vtr_mid)
             tcpCliSock.send('5'.encode())
 
         elif 'l_do' in data:                   #Camera look down
-            if vtr_mid> look_down_max:
-                vtr_mid-=turn_speed
+            #if vtr_mid> look_down_max:
+            #    vtr_mid-=turn_speed
+            if vtr_mid< look_down_max:
+                vtr_mid = max(vtr_mid+turn_speed, look_down_max)
             turn.camera_turn(vtr_mid)
             print(vtr_mid)
             tcpCliSock.send('6'.encode())
 
         elif 'l_le' in data:                   #Camera look left
-            if hoz_mid< look_left_max:
-                hoz_mid+=turn_speed
+            #if hoz_mid< look_left_max:
+            #    hoz_mid+=turn_speed
+            if hoz_mid> look_left_max:
+                hoz_mid=min(hoz_mid-turn_speed,look_left_max)
             turn.ultra_turn(hoz_mid)
             tcpCliSock.send('7'.encode())
 
         elif 'l_ri' in data:                   #Camera look right
-            if hoz_mid> look_right_max:
-                hoz_mid-=turn_speed
+            #if hoz_mid> look_right_max:
+            #    hoz_mid-=turn_speed
+            if hoz_mid< look_right_max:
+                hoz_mid=max(hoz_mid+turn_speed,look_right_max)
             turn.ultra_turn(hoz_mid)
             tcpCliSock.send('8'.encode())
 
@@ -641,7 +652,7 @@ def run():                   #Main loop
             motor.motorStop()
             led.both_off()
             turn.middle()
-        
+
         elif 'auto' in data:                   #When server receive "auto" from client,start Auto Mode
             if auto_status == 0:
                 tcpCliSock.send('0'.encode())
@@ -655,7 +666,7 @@ def run():                   #Main loop
         elif 'opencv' in data:                 #When server receive "auto" from client,start Auto Mode
             if auto_status == 0:
                 auto_status = 1
-                opencv_mode = 1                  
+                opencv_mode = 1
                 tcpCliSock.send('oncvon'.encode())
             continue
 
@@ -680,7 +691,7 @@ def run():                   #Main loop
 if __name__ == '__main__':
 
     HOST = ''
-    PORT = 10223                              #Define port serial 
+    PORT = 10223                              #Define port serial
     BUFSIZ = 1024                             #Define buffer size
     ADDR = (HOST, PORT)
 
