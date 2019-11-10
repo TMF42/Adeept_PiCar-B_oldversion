@@ -64,7 +64,7 @@ def video_show():
     while True:
         frame = footage_socket.recv_string()
         img = base64.b64decode(frame)
-        npimg = np.fromstring(img, dtype=np.uint8)
+        npimg = np.frombuffer(img, dtype=np.uint8)
         source = cv2.imdecode(npimg, 1)
         cv2.imshow("Stream", source)
         cv2.waitKey(1)
@@ -378,6 +378,8 @@ def loop():                       #GUI
                 sc.setDaemon(True)                      #'True' means it is a front thread,it would close when the mainloop() closes
                 sc.start()                              #Thread starts
         def quit_2():          #Call this function to quit program
+            tcpClicSock.close()          # Close socket or it may not connect with the server again
+            cv2.destroyAllWindows()
             exit()
         def socket_connect():     #Call this function to connect with the server
             global ADDR,tcpClicSock,BUFSIZ,ip_stu,ipaddr
@@ -426,8 +428,8 @@ def loop():                       #GUI
                         video_thread=thread.Thread(target=video_show) #Define a thread for data receiving
                         video_thread.setDaemon(True)                    #'True' means it is a front thread,it would close when the mainloop() closes
                         print('Video Connected')
-                        video_thread.start()                            #Thread starts
 
+                        #video_thread.start()  #original loc                           #Thread starts
                         ipaddr=tcpClicSock.getsockname()[0]
                         break
                     else:
@@ -640,6 +642,9 @@ def loop():                       #GUI
 
         BtnQuit= tk.Button(root, width=5, text='Quit',command=quit_2,relief='ridge')
         BtnQuit.place(x=500,y=10)                          #Define a Button and put it in position
+
+        BtnImg= tk.Button(root, width=10, text='Camera',command=video_show,relief='ridge')
+        BtnImg.place(x=500,y=50)                          #Define a Button and put it in position
 
         BtnVIN = tk.Button(root, width=15, text='Voice Input',relief='ridge')
         BtnVIN.place(x=30,y=495)
