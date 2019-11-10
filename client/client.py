@@ -67,7 +67,9 @@ def video_show():
         npimg = np.frombuffer(img, dtype=np.uint8)
         source = cv2.imdecode(npimg, 1)
         cv2.imshow("Stream", source)
-        cv2.waitKey(1)
+        key=cv2.waitKey(1)
+        if key==27:    # ESC to exit
+            break
 
 def call_forward(event):         #When this function is called,client commands the car to move forward
     global c_f_stu
@@ -260,7 +262,7 @@ def loop():                       #GUI
         h = 630
         # get screen width and height
         ws = root.winfo_screenwidth() # width of the screen
-        ws = 1050
+        #ws = 1050
         hs = root.winfo_screenheight() # height of the screen
 
         # calculate x and y coordinates for the Tk root window

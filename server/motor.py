@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # File name   : motor.py
-# Description : Control Motors 
+# Description : Control Motors
 # Website     : www.adeept.com
 # E-mail      : support@adeept.com
 # Author      : William
@@ -19,8 +19,8 @@ Motor_A_Pin2  = 15
 Motor_B_Pin1  = 27
 Motor_B_Pin2  = 18
 
-Dir_forward   = 0
-Dir_backward  = 1
+Dir_forward   = 1
+Dir_backward  = 0
 
 pwm_A = 0
 pwm_B = 0
@@ -91,5 +91,3 @@ try:
 	pass
 except KeyboardInterrupt:
 	destroy()
-
-

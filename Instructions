@@ -1,7 +1,20 @@
-run LanScan to get IP of Adeept PiCar
+Pre-requisites:
+  - make sure to run on python3.7.1
+  - make sure that tk_tcl is in python_build (see https://github.com/pyenv/pyenv/issues/1375)
 
-login to Adeept PiCar via pi@[IP Address]
+Getting the car up and running
+1) run LanScan to get IP of Adeept PiCar
 
-Note: stored my password in keychain
+2) login to Adeept PiCar via pi@[IP Address]
 
-go to Adeept_PiCar-B repo clone
+3) use the password you hopefully stored in your keychain
+
+3) check if server.py is running
+
+3a) if not execute /home/pi/startup.sh
+
+On Client side
+
+ 1) go to Adeept_PiCar-B repo clone
+ 2) go to folder /Client
+ 3) run "python client.py"
