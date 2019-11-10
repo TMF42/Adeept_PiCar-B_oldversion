@@ -184,9 +184,9 @@ def scan():                  #Ultrasonic Scanning
     time.sleep(0.5)          #Wait for the Ultrasonic to be in position
     cat_2=look_left_max                #Value of left-position
     GPIO.setwarnings(False)  #Or it may print warnings
-    while cat_2>look_right_max:         #Scan,from left to right
+    while cat_2<look_right_max:         #Scan,from left to right
         turn.ultra_turn(cat_2)
-        cat_2 -= 3           #This value determine the speed of scanning,the greater the faster
+        cat_2 += 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
         dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
     turn.ultra_turn(hoz_mid)   #Ultrasonic point forward
@@ -201,9 +201,9 @@ def scan_rev():                  #Ultrasonic Scanning
     time.sleep(0.5)          #Wait for the Ultrasonic to be in position
     cat_2=look_right_max                #Value of left-position
     GPIO.setwarnings(False)  #Or it may print warnings
-    while cat_2<look_left_max:         #Scan,from left to right
+    while cat_2>look_left_max:         #Scan,from left to right
         turn.ultra_turn(cat_2)
-        cat_2 += 3           #This value determine the speed of scanning,the greater the faster
+        cat_2 -= 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
         dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
     turn.ultra_turn(hoz_mid)   #Ultrasonic point forward
