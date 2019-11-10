@@ -604,7 +604,7 @@ def run():                   #Main loop
             #if vtr_mid< look_up_max:
             #    vtr_mid+=turn_speed
             if vtr_mid > look_up_max:
-                vtr_mid = min(vtr_mid-turn_speed, look_up_max)
+                vtr_mid = max(vtr_mid-turn_speed, look_up_max)
             print(vtr_mid)
             turn.camera_turn(vtr_mid)
             tcpCliSock.send('5'.encode())
@@ -613,7 +613,7 @@ def run():                   #Main loop
             #if vtr_mid> look_down_max:
             #    vtr_mid-=turn_speed
             if vtr_mid< look_down_max:
-                vtr_mid = max(vtr_mid+turn_speed, look_down_max)
+                vtr_mid = min(vtr_mid+turn_speed, look_down_max)
             turn.camera_turn(vtr_mid)
             print(vtr_mid)
             tcpCliSock.send('6'.encode())
@@ -622,7 +622,7 @@ def run():                   #Main loop
             #if hoz_mid< look_left_max:
             #    hoz_mid+=turn_speed
             if hoz_mid> look_left_max:
-                hoz_mid=min(hoz_mid-turn_speed,look_left_max)
+                hoz_mid=max(hoz_mid-turn_speed,look_left_max)
             turn.ultra_turn(hoz_mid)
             tcpCliSock.send('7'.encode())
 
@@ -630,7 +630,7 @@ def run():                   #Main loop
             #if hoz_mid> look_right_max:
             #    hoz_mid-=turn_speed
             if hoz_mid< look_right_max:
-                hoz_mid=max(hoz_mid+turn_speed,look_right_max)
+                hoz_mid=min(hoz_mid+turn_speed,look_right_max)
             turn.ultra_turn(hoz_mid)
             tcpCliSock.send('8'.encode())
 
