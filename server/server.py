@@ -398,6 +398,7 @@ def dis_scan_thread():       #Get Ultrasonic scan distance
     while 1:
         while  dis_scan:
             dis_data = ultra.checkdist()
+            print(dis_data)
             time.sleep(0.2)
         time.sleep(0.2)
 
