@@ -188,7 +188,7 @@ def scan():                  #Ultrasonic Scanning
         cat_2 += 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
         dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
-        print(new_scan_data)
+        #print(new_scan_data)
     turn.ultra_turn(hoz_mid_orig)   #Ultrasonic point forward
     return dis_dir
 
@@ -206,7 +206,7 @@ def scan_rev():                  #Ultrasonic Scanning
         cat_2 -= 3           #This value determine the speed of scanning,the greater the faster
         new_scan_data=round(ultra.checkdist(),2)   #Get a distance of a certern direction
         dis_dir.append(str(new_scan_data))              #Put that distance value into a list,and save it as String-Type for future transmission
-        print(new_scan_data)
+        #print(new_scan_data)
     turn.ultra_turn(hoz_mid_orig)   #Ultrasonic point forward
     return dis_dir
 
@@ -398,7 +398,7 @@ def dis_scan_thread():       #Get Ultrasonic scan distance
     while 1:
         while  dis_scan:
             dis_data = ultra.checkdist()
-            print(dis_data)
+            #print(dis_data)
             time.sleep(0.2)
         time.sleep(0.2)
 
